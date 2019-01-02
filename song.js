@@ -1,7 +1,7 @@
 /*
-Title: One of My favourite songs.
-Author: Szymon Chomej.
-Description:In this file i describe one of my favourite song by few variables.
+* Title: One of My favourites songs.
+* Author: Szymon Chomej.
+* Description:In this file i describe one of my favourites songs by few variables.
 */
 
 var title = "Małomiasteczkowy";
