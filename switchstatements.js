@@ -151,7 +151,7 @@ let timeAdder = (value1, label1, value2, label2) => {
     } else {
     //Lets add two time values
         
-        //Count seconds in first time vale
+        //Count seconds in first time value
         let secondsInValue1 = () => {
             let seconds = "";
             switch (label1) {
@@ -184,7 +184,7 @@ let timeAdder = (value1, label1, value2, label2) => {
             }
         }
 
-          //Count seconds in first time vale
+          //Count seconds in second time value
           let secondsInValue2 = () => {
             let seconds = "";
             switch (label2) {
