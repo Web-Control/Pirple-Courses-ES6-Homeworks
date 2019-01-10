@@ -1,0 +1,25 @@
+.container {
+  width: 330px;
+  height: auto;
+  margin-top: 100px;
+}
+
+.box {
+  /*border: 1px solid black;*/
+  width: 100px;
+  height: 100px;
+}
+
+.lines1 {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.lines2 {
+  border-bottom: 1px solid black;
+}
+
+.lines3 {
+  border-right: 1px solid black;
+}
+
