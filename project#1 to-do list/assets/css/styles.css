@@ -1,0 +1,131 @@
+.container {
+    margin-right: auto;
+    margin-left:auto;
+    margin-top:30px;
+    margin-bottom:30px;
+    width:80%;
+    height:auto;
+    min-height: 300px;
+    padding: 5px 5px 5px 5px;
+    text-align: center;
+
+    /*border: 1px solid black;*/
+   
+}
+
+#main {
+    margin-top: 100px;
+}
+
+#signUpFormWrapper {
+    text-align: left;
+    margin-top: 50px;
+}
+
+#logInFormWrapper {
+    margin-top:100px;
+    margin-right: auto;
+    margin-left:auto;
+}
+
+#logInForm label {
+    text-align: left;
+}
+#logInForm input[type=submit] {
+    text-align: left;
+}
+
+input {
+    width: 30%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  input[type=submit] {
+      width:10%;
+  }
+
+  input[type=checkbox] {
+      width:30px;
+  }
+
+  
+  label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+  }
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+
+  .log-button {
+      width:150px;
+      height:50px;
+  }
+  
+  .button-green {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #4CAF50;
+  }
+  
+  .button-green:hover {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .button-blue {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+  }
+  
+  .button-blue:hover {
+    background-color: #008CBA;
+    color: white;
+  }
+  
+  .button-red {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #f44336;
+  }
+  
+  .button-red:hover {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .button-gray {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7e7e7;
+  }
+  
+  .button-gray:hover {background-color: #e7e7e7;}
+  
+  .button-black {
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+  }
+  
+  .button-black:hover {
+    background-color: #555555;
+    color: white;
+  }
