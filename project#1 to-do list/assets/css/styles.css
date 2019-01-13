@@ -35,6 +35,17 @@
     text-align: left;
 }
 
+#dashboard {
+  text-align: left;
+  margin-top: 50px;
+}
+
+#todo-lists-wrapper {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 5px 5px 5px 5px;
+}
+
 input {
     width: 30%;
     padding: 12px;
