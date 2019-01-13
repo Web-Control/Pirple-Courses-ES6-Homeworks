@@ -3,10 +3,16 @@
 let toDoList = () => {
 
     let storage = window.localStorage;
+    let session = window.sessionStorage;
+
+    let logOut = document.getElementById("log-out");
+    let message = document.getElementById("message");
     let main = document.getElementById("main");
     let signUpFormWrapper = document.getElementById("signUpFormWrapper");
-    let logInForm = document.getElementById("logInFormWrapper");
+    let logInFormWrapper = document.getElementById("logInFormWrapper");
     let dashboard = document.getElementById("dashboard");
+
+    let userLogedIn = "";
 
     let signUpOrLogIn = () => {
 
@@ -20,14 +26,14 @@ let toDoList = () => {
 
         let showLogIn = () => {
             main.style.display = "none";
-            logInForm.style.display = "inherit";
+            logInFormWrapper.style.display = "inherit";
         }
 
 
         signUpButton.addEventListener("click",showSignUp);
         logInButton.addEventListener("click",showLogIn);
 
-        console.log(window.localStorage);
+       // console.log(window.localStorage);
 
     //     let storage = window.localStorage;
     //     storage.setItem('UserSzymon','{"firstName":"Szymon", "lastName": "Chomej","listaNr1":"sniadanie,obiad,praca dowmowa,kolacja"}');
@@ -65,8 +71,28 @@ let toDoList = () => {
             storage.setItem(email,userData);
             console.log(storage);
 
-            signUpFormWrapper.style.display = "none";
-            dashboard.style.display = "block";
+            session.setItem("user",firstName + " " +lastName);
+            console.log(session);
+
+            if (session.user) {
+                logOut.innerHTML = session.getItem("user") +" "+" <button class='button-logout' id='log-out-button'>Log Out</button>";
+
+                signUpFormWrapper.style.display = "none";
+                logOut.style.display = "inline";
+                dashboard.style.display = "block";
+            } else {
+                message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning!</strong> Something is wrong. Please try again.</div>"
+
+                let closeBtn = document.getElementById("closebtn");
+                let alert = document.getElementById("alert");
+                let closeAlert = () => {
+                    alert.style.display = "none";
+                }
+                closeBtn.addEventListener("click",closeAlert)
+
+
+            }
+            
 
 
         }
@@ -75,8 +101,102 @@ let toDoList = () => {
 
     }
 
+    let logIn = () => {
+        let logInForm = document.getElementById("logInForm");
+
+        let tryLogIn = (e) => {
+            e.preventDefault();
+
+            let email = document.getElementById("log-in-email").value;
+            let password = document.getElementById("log-in-password").value;
+
+            let emailPassed =""
+
+            for (const key in storage) {
+               
+                if (key === email) { 
+                    emailPassed = true;
+                    break;
+                } else {
+                    emailPassed = false;
+                }
+             }
+
+             if (!emailPassed) {
+                message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning!</strong> Wrong email. Please try again.</div>"
+
+                let closeBtn = document.getElementById("closebtn");
+                let alert = document.getElementById("alert");
+                let closeAlert = () => {
+                    alert.style.display = "none";
+                }
+                closeBtn.addEventListener("click",closeAlert)
+                 
+             } else {
+                let user = storage.getItem(email);
+                let userData = JSON.parse(user);
+   
+                if (userData.password !== password) {
+
+                    message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning!</strong> Wrong password. Please try again.</div>"
+   
+                    let closeBtn = document.getElementById("closebtn");
+                    let alert = document.getElementById("alert");
+                    let closeAlert = () => {
+                        alert.style.display = "none";
+                    }
+                    closeBtn.addEventListener("click",closeAlert)
+                    
+                } else {
+                    session.setItem("user",userData.firstName+ " " +userData.lastName);
+                    console.log(session);
+
+                    logOut.innerHTML = session.getItem("user") +" "+" <button class='button-logout' id='log-out-button'>Log Out</button>";
+   
+                    logInFormWrapper.style.display = "none";
+                    logOut.style.display = "inline";
+                    dashboard.style.display = "block";
+                    userLogedIn = true;
+                    console.log(userLogedIn);
+                }
+   
+             }
+
+            
+         }
+
+        logInForm.addEventListener("submit",tryLogIn);
+
+
+    }
+
+    let logOutUser = () => {
+
+        let logOutButton = document.getElementById("log-out-button");
+
+        let logOut = () => {
+            session.removeItem("user");
+            userLogedIn = false;
+            console.log(session);
+            location.reload();
+        }
+
+
+        logOutButton.addEventListener("click",logOut);
+
+
+    }
+
     signUpOrLogIn();
     signUp();
+    logIn();
+
+    if (userLogedIn === true) {
+        console.log("Jestem");
+
+        logOutUser();
+        
+    }
 
 }
 

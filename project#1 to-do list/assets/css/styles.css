@@ -13,8 +13,24 @@
    
 }
 
+
+#log-out {
+  float: right;
+  text-align: right;
+  margin-top:5px;
+  margin-right: 20px;
+}
+#log-out-button {
+  margin-left:20px;
+  margin-right:20px;
+}
+
 #main {
-    margin-top: 100px;
+  margin-top: 100px;
+}
+
+#message {
+  margin-top:5px;
 }
 
 #signUpFormWrapper {
@@ -139,4 +155,64 @@ input {
   .button-black:hover {
     background-color: #555555;
     color: white;
+  }
+
+  .button-logout {
+    border-radius: 4px;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline;
+    font-size: 10px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+  }
+
+  .button-logout:hover {
+    background-color: #555555;
+    color: white;
+  }
+
+  .alert-danger {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+  }
+  .alert-warning {
+    padding: 20px;
+    background-color: #ff9800;
+    color: white;
+  }
+
+  .alert-success {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .alert-info {
+    padding: 20px;
+    background-color: #2196F3;
+    color: white;
+  }
+  
+  .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .closebtn:hover {
+    color: black;
   }

@@ -10,7 +10,10 @@
 </head>
 
 <body>
+    <div id="log-out" style="display: none"></div>
     <div class = "container">
+        <div id="message"></div>
+
         <div id="main">
             <h1>to-do list</h1>
             <p>This app will let you create and manage lists with staff you have to do.</p><br><br>
@@ -21,10 +24,10 @@
         <div id="logInFormWrapper" style="display: none">
             <form method="post" id="logInForm">
                 <label>Login - Email</label><br>
-                <input type="email" required><br><br>
+                <input type="email" id="log-in-email" required><br><br>
 
                 <label>Password</label><br>
-                <input type="password" required><br><br>
+                <input type="password" id="log-in-password" required><br><br>
 
                 <input type="submit" value="Log In" class="button button-green" id="logIn-button2">
 
