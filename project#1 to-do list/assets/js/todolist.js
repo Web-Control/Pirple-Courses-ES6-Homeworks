@@ -48,6 +48,23 @@ let toDoList = () => {
 
     }
 
+    let logOutUser = () => {
+
+        let logOutButton = document.getElementById("log-out-button");
+
+        let logOut = () => {
+            session.removeItem("user");
+            userLogedIn = false;
+            console.log(session);
+            location.reload();
+        }
+
+
+        logOutButton.addEventListener("click",logOut);
+
+
+    }
+
     let signUp = () => { 
 
         let signUpForm = document.getElementById("sign-Up-form");
@@ -149,7 +166,6 @@ let toDoList = () => {
                     
                 } else {
                     session.setItem("user",userData.firstName+ " " +userData.lastName);
-                    console.log(session);
 
                     logOut.innerHTML = session.getItem("user") +" "+" <button class='button-logout' id='log-out-button'>Log Out</button>";
    
@@ -157,8 +173,13 @@ let toDoList = () => {
                     logOut.style.display = "inline";
                     dashboard.style.display = "block";
                     userLogedIn = true;
-                    console.log(userLogedIn);
-                }
+
+                    if (userLogedIn === true) {
+
+                       logOutUser();
+                        
+                    }
+                 }
    
              }
 
@@ -170,33 +191,10 @@ let toDoList = () => {
 
     }
 
-    let logOutUser = () => {
-
-        let logOutButton = document.getElementById("log-out-button");
-
-        let logOut = () => {
-            session.removeItem("user");
-            userLogedIn = false;
-            console.log(session);
-            location.reload();
-        }
-
-
-        logOutButton.addEventListener("click",logOut);
-
-
-    }
 
     signUpOrLogIn();
     signUp();
     logIn();
-
-    if (userLogedIn === true) {
-        console.log("Jestem");
-
-        logOutUser();
-        
-    }
 
 }
 
