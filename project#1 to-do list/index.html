@@ -24,10 +24,10 @@
         <div id="logInFormWrapper" style="display: none">
             <form method="post" id="logInForm">
                 <label>Login - Email</label><br>
-                <input type="email" id="log-in-email" required><br><br>
+                <input type="email" maxlength="30" id="log-in-email" required><br><br>
 
                 <label>Password</label><br>
-                <input type="password" id="log-in-password" required><br><br>
+                <input type="password" maxlength="30" id="log-in-password" required><br><br>
 
                 <input type="submit" value="Log In" class="button button-green" id="logIn-button2">
 
@@ -39,16 +39,16 @@
             <h1>Sign Up for "to-do list":</h1>
             <form id="sign-Up-form" method="post">
                 <label>First Name</label><br>
-                <input type="text" name="firstname" id="first-name" required><br><br>
+                <input type="text" maxlength="30" name="firstname" id="first-name" required><br><br>
 
                 <label>Last Name</label><br>
-                <input type="text" name="lastname" id="last-name" required><br><br>
+                <input type="text" maxlength="30" name="lastname" id="last-name" required><br><br>
 
                 <label>Email</label><br>
-                <input type="email" name="email" id="email" required><br><br>
+                <input type="email" maxlength="30" name="email" id="email" required><br><br>
 
                 <label for="password">Password</label><br>
-                <input type = "password" id="password" required><br><br>
+                <input type = "password" maxlength="30" id="password" required><br><br>
 
                 <label>I agree to the Terms of Use:</label>
                 <input type="checkbox" name="terms" id="terms-agreement" required><br><br>
@@ -65,9 +65,28 @@
                 <div id="todo-lists-wrapper">
                     
                 </div>
+
+                <div id="create-list-form-wrapper" style="display:none" > 
+                    <h2>Create new list</h2>
+                    <form id="create-list-form" method="POST">
+                        <label>List's Name</label><br>
+                        <input type="text" maxlength="30" ><br><br>
+
+                        <label>Items to add:</label>
+                        <div id="list-items">
+                            <input type="text">
+                        </div><br>
+                        <button class="button button-gray" id="add-item-button">Add Item</button><br><br><br>
+
+
+                        <button type="submit" class="button button-green" id="save-list-button">Save List</button>
+
+
+                    </form>
+                </div>
                 
 
-            <button class="button button-blue">Create New List</button>
+            <button class="button button-blue" id="create-list-button">Create New List</button>
         </div>
        
     </div>
