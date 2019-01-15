@@ -59,37 +59,52 @@
         </div>
 
         <div id="dashboard" style="display: none">
-            <h1>Dashboard</h1>
-            <p>Your to-do lists:</p>
+            <div id="list-create-zone">
+                <h1>Dashboard</h1>
+                <hr>
+                <h3>Create and manage your lists:</h3>
 
-                <div id="todo-lists-wrapper">
+                    <div id="todo-lists-wrapper">
+                        
+                    </div>
+
+                    <div id="create-list-form-wrapper" style="display:none" > 
+                        <h2>Create new list</h2>
+                        <form id="create-list-form" method="POST">
+                            <label>List's Name</label><br>
+                            <input type="text" maxlength="30" ><br><br>
+
+                            <label>Items to add:</label>
+                            <div id="list-items">
+                                <input type="text">
+                            </div><br>
+                            <button class="button button-gray" id="add-item-button">Add Item</button><br>
+                            <button class="button button-red" id="remove-item-button">Remove Item</button><br><br><br>
+
+
+                            <button type="submit" class="button button-green" id="save-list-button">Save List</button>
+
+
+                        </form>
+                    </div>
                     
-                </div>
 
-                <div id="create-list-form-wrapper" style="display:none" > 
-                    <h2>Create new list</h2>
-                    <form id="create-list-form" method="POST">
-                        <label>List's Name</label><br>
-                        <input type="text" maxlength="30" ><br><br>
+                <button class="button button-blue" id="create-list-button">Create New List</button>
+            </div>
 
-                        <label>Items to add:</label>
-                        <div id="list-items">
-                            <input type="text">
-                        </div><br>
-                        <button class="button button-gray" id="add-item-button">Add Item</button><br><br><br>
+            <div id="list-edition-zone" style="display:none">
+                <h3>Edit your list:</h3>
+                <form id = "list-edition-form">
 
+                </form>
+            </div>
 
-                        <button type="submit" class="button button-green" id="save-list-button">Save List</button>
-
-
-                    </form>
-                </div>
-                
-
-            <button class="button button-blue" id="create-list-button">Create New List</button>
         </div>
+
+        
        
     </div>
+    <footer>CreatedBy Szymon Chomej</footer>
     
     <script src="assets/js/todolist.js"></script>
 </body>

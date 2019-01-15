@@ -1,3 +1,12 @@
+html {
+   height:100%;
+  }
+body {
+   min-height:100%; 
+   padding:0; 
+   margin:0; 
+   position:relative; 
+  }
 .container {
     margin-right: auto;
     margin-left:auto;
@@ -32,7 +41,7 @@
 #message {
   margin-top:5px;
   position:absolute;
-  top:30%;
+  top:50%;
   left:auto;
   right:auto;
 }
@@ -52,15 +61,18 @@
     text-align: left;
 }
 #logInForm input[type=submit] {
-    text-align: left;
+    text-align: center;
 }
 
 #dashboard {
   text-align: left;
   margin-top: 50px;
+  display: flex;
+  flex-direction: row;
 }
 
 #todo-lists-wrapper {
+  display: block;
   margin-top: 30px;
   margin-bottom: 30px;
   padding: 5px 5px 5px 5px;
@@ -68,6 +80,39 @@
 
 #todo-lists-wrapper li {
   margin-top:5px;
+  cursor: pointer;
+}
+
+#list-create-zone {
+  padding: 5px 5px 5px 5px;
+  width:40%;
+}
+
+#list-edition-zone {
+  display: flex;
+  flex-direction: column;
+  margin-top:85px;
+  padding: 5px 5px 5px 5px;
+  width:40%;
+  
+}
+
+#list-edition-form  {
+display: block;
+}
+
+#list-edition-form input {
+  margin-top:3px;
+  margin-bottom: 3px;
+  display:block;
+}
+
+#list-edition-form button {
+display: block;
+}
+
+#list-edition-form button {
+  margin-top:20px;
 }
 
 
@@ -82,15 +127,11 @@
 }
 
 input {
-    width: 30%;
+    width: 200px;
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
-  }
-
-  input[type=submit] {
-      width:10%;
   }
 
   input[type=checkbox] {
@@ -108,11 +149,11 @@ input {
     border: none;
     border-radius: 4px;
     color: white;
-    padding: 16px 32px;
+    padding: 14px 28px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 12px;
     margin: 4px 2px;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
@@ -160,7 +201,7 @@ input {
   .button-gray {
     background-color: white;
     color: black;
-    border: 2px solid #e7e7e7;
+    border: 2px solid gray;
   }
   
   .button-gray:hover {background-color: #e7e7e7;}
@@ -234,4 +275,15 @@ input {
   
   .closebtn:hover {
     color: black;
+  }
+
+  footer {
+    clear: both;
+    position: relative;
+    /* right: 0;
+    bottom: 0;
+    left: 0; */
+    padding: 1rem;
+    background-color: #efefef;
+    text-align: center;
   }

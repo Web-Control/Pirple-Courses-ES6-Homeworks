@@ -27,6 +27,21 @@ let toDoList = () => {
 
     }
 
+    let isAnyInputEmpty = (inputs) => {
+                    
+        //we check if inputs value are not empty
+        for (let i = 1; i < inputs.length; i++) {
+            if (inputs[i].value.length === 0) {
+                return true;
+                break;
+            } else {
+                if (i === inputs.length -1) {
+                    return false;
+                }
+            }
+        }
+    }
+
     let signUpOrLogIn = () => {
 
         let signUpButton = document.getElementById("signUp-button");
@@ -68,7 +83,6 @@ let toDoList = () => {
         let logOut = () => {
             session.removeItem("user");
             userLogedIn = false;
-            console.log(session);
             location.reload();
         }
 
@@ -77,37 +91,225 @@ let toDoList = () => {
 
 
     }
-
     let showLists = () => {
-            let user = session.getItem("user");
+        let user = session.getItem("user");
+
+        let userData = storage.getItem(userEmail);
+        userData = JSON.parse(userData);
+        let toDoLists = new Array();
+        let toDoListsDiv = document.getElementById("todo-lists-wrapper");
+
+        for (const key in userData) {
+          if (key.search("list") === 0) {
+              let list = key.slice(5);
+              toDoLists.push(list);
+          }
+        }
+
+        if (toDoLists.length === 0) {
+            toDoListsDiv.innerText = "No lists so far.";
+        } else {
+            toDoListsDiv.innerHTML = "<ul class='to-do-lists' id='to-do-lists'></ul>";
+            let toDoUl = document.getElementById("to-do-lists");
+
+            for (let i = 0; i < toDoLists.length; i++) {
+                let li = document.createElement("LI");
+                li.setAttribute("id","list-"+(i+1));
+                toDoUl.appendChild(li);
+                let lastLi = document.getElementById("list-"+(i+1));
+                lastLi.innerHTML = toDoLists[i];  
+            }
+
+            editList();
+
+        }
+}
+    let editList = () => {
+        let toDoListsDiv = document.getElementById("todo-lists-wrapper");
+        let liList = document.getElementsByTagName("LI");
+        let toDoListsNames = [];
+        let editionZone = document.getElementById("list-edition-zone");
+        let editionForm = document.getElementById("list-edition-form");
+        let listToEdit ="";
+
+        let saveChanges = (e) => {
+            e.preventDefault();
+            let inputs = editionForm.getElementsByTagName("INPUT");
+            let isSthInFormEmpty = isAnyInputEmpty(inputs);
+            let toDoListName = inputs[0].value;
+            let itemsToDo = [];
+
+            //we make list items to do
+            for (let i = 1; i < inputs.length; i++) {
+                
+                itemsToDo.push(inputs[i].value);
+            }
+            itemsToDo = itemsToDo.toString();
+
+            
+             if (isSthInFormEmpty) {
+                 let message = "Don't leave any empty items in Edit List form"
+                 warningMessage(message);
+                 
+             } else {
+                let userData = storage.getItem(userEmail);
+                userData = JSON.parse(userData);
+                let actualtoDoList = userData["list-" + listToEdit];
+                actualtoDoList = actualtoDoList.split(",");
+
+                //We take all saved lists
+                let toDoLists = new Array();
+                for (const key in userData) {
+                    if (key.search("list") === 0) {
+                        let list = key.slice(5);
+                        toDoLists.push(list);
+                    }
+                  }
+
+                  //We remove edited list from above list because we dont want to compare it's name
+                  for (let i = 0; i < toDoLists.length; i++) {
+                      
+                      if (toDoLists[i] === listToEdit) {
+                          toDoLists.splice(i,1);
+                          break;
+                      }
+                  }
+                
+                  let isListNameUsed = "";
+                  //We check if name list is already used
+                  for (let i = 0; i < toDoLists.length; i++) {
+                    
+                      if (toDoLists[i] === toDoListName) {
+                          isListNameUsed = true;
+                          break;
+                      } else {
+                          if (i === toDoLists.length - 1) {
+                              isListNameUsed = false;
+                          }
+                      }
+                  }
+
+                  if (isListNameUsed === true) {
+                    let message = "This list's name is already used"
+                     warningMessage(message); 
+                  } else {
+
+                    if (toDoListName === listToEdit) {
+                         
+                        userData["list-" + listToEdit] = itemsToDo;
+                        userData = JSON.stringify(userData);
+
+                        storage.setItem(userEmail,userData);
+
+                        
+                    } else {
+                        delete userData["list-" + listToEdit];
+                        userData["list-" + toDoListName] = itemsToDo;
+                        userData = JSON.stringify(userData);
+
+                        storage.setItem(userEmail,userData);
+                        showLists();
+                    }
+
+                  }
+
+
+
+             }
+           
+            
+        }
+
+        let edit = (e) => {
+            editionZone.style.display = "flex";
+
+            //We clear the form
+            while (editionForm.firstChild) {
+                editionForm.removeChild(editionForm.firstChild);
+            }
+
+            //We create edition form
+            let listName = "list-" + e.target.textContent;
 
             let userData = storage.getItem(userEmail);
             userData = JSON.parse(userData);
-            let toDoLists = new Array();
-            let toDoListsDiv = document.getElementById("todo-lists-wrapper");
 
-            for (const key in userData) {
-              if (key.search("list") === 0) {
-                  let list = key.slice(5);
-                  toDoLists.push(list);
-              }
+            let listItemsToEdit = userData[listName];
+            listItemsToEdit = listItemsToEdit.split(",");
+
+            let label = document.createElement("label");
+            label.innerHTML= "List's Name: <br>"
+            editionForm.appendChild(label);
+            
+            let input = document.createElement("input");
+            input.value = e.target.textContent;
+            listToEdit = e.target.textContent;
+            editionForm.appendChild(input);
+
+            let label2 = document.createElement("label");
+            label2.innerHTML= "Items: <br>"
+            editionForm.appendChild(label2);
+
+            let newItemsDiv = document.createElement("DIV");
+            newItemsDiv.setAttribute("id","new-items");
+            editionForm.appendChild(newItemsDiv);
+
+            //List items
+            for (const element of listItemsToEdit) {
+                
+                let input = document.createElement("input");
+                input.value = element;
+                newItemsDiv.appendChild(input);
             }
 
-            if (toDoLists.length === 0) {
-                toDoListsDiv.innerText = "No lists so far.";
-            } else {
-                toDoListsDiv.innerHTML = "<ul class='to-do-lists' id='to-do-lists'></ul>";
-                let toDoUl = document.getElementById("to-do-lists");
-
-                for (let i = 0; i < toDoLists.length; i++) {
-                    let li = document.createElement("LI");
-                    li.setAttribute("id","list-"+(i+1));
-                    toDoUl.appendChild(li);
-                    let lastLi = document.getElementById("list-"+(i+1));
-                    lastLi.innerHTML = toDoLists[i];  
-                }
+            let addItem = (e) => {
+                e.preventDefault();
+                let li = document.createElement("INPUT");
+                newItemsDiv.appendChild(li);
             }
+
+            let removeItem = (e) => {
+                e.preventDefault();
+                newItemsDiv.removeChild(newItemsDiv.lastChild);
+            }
+
+            let addItemButton = document.createElement("button");
+            addItemButton.setAttribute("class","button button-gray");
+            addItemButton.innerText="Add Item";
+
+            editionForm.appendChild(addItemButton);
+
+            addItemButton.addEventListener("click", addItem);
+
+            let removeItemButton = document.createElement("button");
+            removeItemButton.setAttribute("class","button button-red");
+            removeItemButton.innerText = "Remove Item";
+
+            editionForm.appendChild(removeItemButton);
+
+            removeItemButton.addEventListener("click",removeItem);
+
+            let saveEditButton = document.createElement("button");
+            saveEditButton.setAttribute("type","submit");
+            saveEditButton.setAttribute("class","button button-green");
+            saveEditButton.innerText="Save Changes";
+
+            editionForm.appendChild(saveEditButton);
+
+            saveEditButton.addEventListener("click",saveChanges);
+
+        }
+
+        //Adding click function to list lists
+        for (let i = 0; i < liList.length; i++) {
+            toDoListsNames.push(liList[i].textContent);
+
+            liList[i].addEventListener("click",edit);
+        }
+        
     }
+
+    
 
     let createList = () => {
 
@@ -125,51 +327,44 @@ let toDoList = () => {
             let listItems = [];
 
             //we check if inputs value are not empty
-            let isAnyInputEmpty = "";
-            for (let i = 1; i < inputs.length; i++) {
-                if (inputs[i].value.length === 0) {
-                    isAnyInputEmpty = true;
-                    break;
-                } else {
-                    if (i === inputs.length -1) {
-                        isAnyInputEmpty = false;
-                    }
-                }
-            }
+             let isSthInFormEmpty = isAnyInputEmpty(inputs);
 
-            if (isAnyInputEmpty === true) {
+            if (isSthInFormEmpty === true) {
                 let message = "Don't leave any empty items in New List form";
                 warningMessage(message);
             } else {
-                 //we check if List's name is already used or not
-                    for (let i = 1; i < inputs.length; i++) {
-                        listItems.push(inputs[i].value);
-                    }
-
-                    let userData = storage.getItem(userEmail);
-                    userData = JSON.parse(userData);
-
-                    let isListNameUsed ="";
-                    let lists = new Array();
-
-                    for (const key in userData) {
-                        if (key.search("list") === 0) {
-                            lists.push(key);
+                let userData = storage.getItem(userEmail);
+                userData = JSON.parse(userData);
+                    let isListNameUsed = () => {
+                        //we check if List's name is already used or not
+                        for (let i = 1; i < inputs.length; i++) {
+                            listItems.push(inputs[i].value);
                         }
-                    }
 
-                    for (let i = 0; i < lists.length; i++) {
-                        if (lists[i] === listName) {
-                            isListNameUsed = true;
-                            break
-                        } else {
-                            if (i === lists.length-1) {
-                                isListNameUsed = false;
+                        let isListNameUsed ="";
+                        let lists = new Array();
+
+                        for (const key in userData) {
+                            if (key.search("list") === 0) {
+                                lists.push(key);
+                            }
+                        }
+
+                        for (let i = 0; i < lists.length; i++) {
+                            if (lists[i] === listName) {
+                                return true;
+                                break
+                            } else {
+                                if (i === lists.length-1) {
+                                    return false;
+                                }
                             }
                         }
                     }
+
+                    let isNameListUsed = isListNameUsed();
                 
-                    if (isListNameUsed === true) {
+                    if (isNameListUsed === true) {
                         let message = "This list name is already used.";
                         warningMessage(message);
                         
@@ -191,6 +386,7 @@ let toDoList = () => {
             e.preventDefault();
             creatListDiv.style.display = "block";
             let addItemButton = document.getElementById("add-item-button");
+            let removeItemButton = document.getElementById("remove-item-button");
 
             let addItem = (e) => {
                 e.preventDefault();
@@ -198,7 +394,13 @@ let toDoList = () => {
                 itemsDiv.appendChild(li);
             }
 
+            let removeItem = (e) => {
+                e.preventDefault();
+                itemsDiv.removeChild(itemsDiv.lastChild);
+            }
+
             addItemButton.addEventListener("click",addItem);
+            removeItemButton.addEventListener("click",removeItem);
 
         }
 
@@ -384,7 +586,7 @@ let toDoList = () => {
    
                     logInFormWrapper.style.display = "none";
                     logOut.style.display = "inline";
-                    dashboard.style.display = "block";
+                    dashboard.style.display = "flex";
                     userEmail = email;
                     userLogedIn = true;
 
