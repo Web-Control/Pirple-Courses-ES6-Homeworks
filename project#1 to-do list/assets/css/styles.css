@@ -115,6 +115,10 @@ display: block;
   margin-top:20px;
 }
 
+#list-edition-form input[type="checkbox"] {
+  margin-bottom:20px;
+}
+
 
 
 #list-items {

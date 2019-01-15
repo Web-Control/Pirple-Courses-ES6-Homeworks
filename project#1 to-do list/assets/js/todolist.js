@@ -47,7 +47,7 @@ let toDoList = () => {
         let signUpButton = document.getElementById("signUp-button");
         let logInButton = document.getElementById("logIn-button");
 
-        let showSignUp = () => {
+    let showSignUp = () => {
             main.style.display = "none";
             signUpFormWrapper.style.display = "inherit";
         }
@@ -91,6 +91,7 @@ let toDoList = () => {
 
 
     }
+
     let showLists = () => {
         let user = session.getItem("user");
 
@@ -138,14 +139,31 @@ let toDoList = () => {
             let isSthInFormEmpty = isAnyInputEmpty(inputs);
             let toDoListName = inputs[0].value;
             let itemsToDo = [];
+            let checkedInputs = [];
 
             //we make list items to do
             for (let i = 1; i < inputs.length; i++) {
                 
-                itemsToDo.push(inputs[i].value);
-            }
-            itemsToDo = itemsToDo.toString();
+                if (i === 1 || i % 2 === 1) {
+                    itemsToDo.push(inputs[i].value); 
+                }
 
+                if (i % 2 === 0) {
+                    checkedInputs.push(inputs[i].checked);
+                }
+                
+            }
+
+            //We check wchich items was checked as done
+            for (let i = 0; i < itemsToDo.length; i++) {
+                
+                if (checkedInputs[i] === true) {
+                    itemsToDo[i] = "done-"+itemsToDo[i];
+                }
+
+            }
+
+            itemsToDo = itemsToDo.toString();
             
              if (isSthInFormEmpty) {
                  let message = "Don't leave any empty items in Edit List form"
@@ -223,7 +241,7 @@ let toDoList = () => {
         let edit = (e) => {
             editionZone.style.display = "flex";
 
-            //We clear the form
+            //We clear the form to load another list when clicked
             while (editionForm.firstChild) {
                 editionForm.removeChild(editionForm.firstChild);
             }
@@ -258,18 +276,43 @@ let toDoList = () => {
             for (const element of listItemsToEdit) {
                 
                 let input = document.createElement("input");
-                input.value = element;
+                input.setAttribute("type","text");
+
+                //We check wchich element is done and delete word done from it's name
+                if (element.search("done") === 0) {
+                    input.value = element.slice(5);
+                } else {
+                    input.value = element;
+                }
+
                 newItemsDiv.appendChild(input);
+
+                let checkbox = document.createElement("input");
+                checkbox.setAttribute("type","checkbox");
+                checkbox.setAttribute("value","done");
+
+                //We check wchich item is done
+                if (element.search("done") === 0) {
+                    checkbox.setAttribute("checked","true");
+                }
+
+                newItemsDiv.appendChild(checkbox);
             }
 
             let addItem = (e) => {
                 e.preventDefault();
-                let li = document.createElement("INPUT");
-                newItemsDiv.appendChild(li);
+                let input = document.createElement("INPUT");
+                input.setAttribute("type","text");
+                newItemsDiv.appendChild(input);
+
+                let checkbox = document.createElement("input");
+                checkbox.setAttribute("type","checkbox");
+                newItemsDiv.appendChild(checkbox);
             }
 
             let removeItem = (e) => {
                 e.preventDefault();
+                newItemsDiv.removeChild(newItemsDiv.lastChild);
                 newItemsDiv.removeChild(newItemsDiv.lastChild);
             }
 
