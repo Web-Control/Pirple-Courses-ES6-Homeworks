@@ -11,6 +11,7 @@
 
 <body>
     <div id="log-out" style="display: none"></div>
+    
     <div class = "container">
         <div id="message"></div>
 
@@ -54,6 +55,29 @@
                 <input type="checkbox" name="terms" id="terms-agreement" required><br><br>
 
                 <input type="submit" value = "Sign Up" class="button button-green" id = "signUp-button2">
+
+            </form>
+        </div>
+
+        <div id="account-settings" style ="display: none">
+            <h1>Edit your data:</h1>
+            <form id="edit-account-form" method="post">
+                <label>First Name</label><br>
+                <input type="text" maxlength="30" name="firstname" id="first-name" required><br><br>
+
+                <label>Last Name</label><br>
+                <input type="text" maxlength="30" name="lastname" id="last-name" required><br><br>
+
+                <label>Email</label><br>
+                <input type="email" maxlength="30" name="email" id="email" required><br><br>
+
+                <label for="password">Password</label><br>
+                <input type = "password" maxlength="30" id="password" required><br><br>
+
+                <label>I agree to the Terms of Use:</label>
+                <input type="checkbox" name="terms" id="terms-agreement" required><br><br>
+
+                <button type="submit" class="button button-green" id = "edit-account-form-button">Save Changes</button>
 
             </form>
         </div>

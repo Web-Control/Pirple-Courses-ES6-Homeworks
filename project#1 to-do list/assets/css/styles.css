@@ -24,6 +24,7 @@ body {
 
 
 #log-out {
+  position:relative;
   float: right;
   text-align: right;
   margin-top:5px;
@@ -39,11 +40,14 @@ body {
 }
 
 #message {
-  margin-top:5px;
+  margin-top:50px;
   position:absolute;
-  top:50%;
-  left:auto;
-  right:auto;
+  top:60%;
+  width:80%;
+  margin-right: auto;
+  margin-left:auto;
+  text-align: center;
+ 
 }
 
 #signUpFormWrapper {
@@ -69,6 +73,10 @@ body {
   margin-top: 50px;
   display: flex;
   flex-direction: row;
+}
+
+#account-settings {
+  text-align: left;
 }
 
 #todo-lists-wrapper {

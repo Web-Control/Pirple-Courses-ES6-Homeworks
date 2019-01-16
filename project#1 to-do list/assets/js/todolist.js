@@ -10,6 +10,7 @@ let toDoList = () => {
     let main = document.getElementById("main");
     let signUpFormWrapper = document.getElementById("signUpFormWrapper");
     let logInFormWrapper = document.getElementById("logInFormWrapper");
+    let editAccountFormWrapper = document.getElementById("account-settings");
     let dashboard = document.getElementById("dashboard");
 
     let userLogedIn = "";
@@ -24,6 +25,23 @@ let toDoList = () => {
         alert.style.display = "none";
         }
         closeBtn.addEventListener("click",closeAlert)
+
+    }
+
+    let successgMessage = (text) => {
+
+        message.innerHTML = "<div class='alert-success' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Success! </strong>"+ text +"</div>"
+        let closeBtn = document.getElementById("closebtn");
+        let alert = document.getElementById("alert");
+
+        let closeAlert = () => {
+        alert.style.display = "none";
+        }
+
+        closeBtn.addEventListener("click",closeAlert)
+
+        setTimeout(closeAlert,5000);
+    
 
     }
 
@@ -90,6 +108,76 @@ let toDoList = () => {
         logOutButton.addEventListener("click",logOut);
 
 
+    }
+
+    let userDataEdition = (e) => {
+      
+        e.preventDefault();
+        dashboard.style.display = "none";
+        editAccountFormWrapper.style.display = "block";
+
+        let editForm = document.getElementById("edit-account-form");
+        let editButton = document.getElementById("edit-account-form-button");
+        let inputs = editForm.getElementsByTagName("input");
+        let userData = storage.getItem(userEmail);
+        userData = JSON.parse(userData);
+
+        //We fill inputs with stored user data
+        inputs[0].value = userData.firstName;
+        inputs[1].value = userData.lastName;
+        inputs[2].value = userData.email;
+        inputs[3].value = userData.password;
+        inputs[4].checked = true;
+
+        let edit = (e) => {
+            e.preventDefault();
+
+            let inputs = editForm.getElementsByTagName("input");
+            let isSthInFormEmpty = isAnyInputEmpty(inputs);
+            let dataFromForm = [];
+
+            for (let i = 0; i < inputs.length; i++) {
+                
+                dataFromForm[i] = inputs[i].value;
+                
+            }
+
+            if (isSthInFormEmpty) {
+                let message = "You can't leave any empty inputs in the form";
+                warningMessage(message);
+            } else {
+                let userData = storage.getItem(userEmail);
+                userData = JSON.parse(userData);
+
+                 //We save inputs to user data in localeStorage
+                userData.firstName = dataFromForm[0];
+                userData.lastName = dataFromForm[1];
+                userData.email = dataFromForm[2];
+                userData.password = dataFromForm[3];
+                
+                userData = JSON.stringify(userData);
+                
+                if (userEmail === inputs[2].value) {
+                    storage.setItem(userEmail,userData);
+
+                    let message ="Your account data were changed."
+                    successgMessage(message);
+
+                } else {
+                    storage.setItem(inputs[2].value,userData);
+                    storage.removeItem(userEmail);
+
+                    let message ="Your account data were changed."
+                    successgMessage(message);
+
+                    console.log(storage);
+                }
+
+            } 
+            
+        }
+
+        editButton.addEventListener("click",edit);
     }
 
     let showLists = () => {
@@ -543,13 +631,16 @@ let toDoList = () => {
                 session.setItem("user",firstName + " " +lastName);
     
                 if (session.user) {
-                    logOut.innerHTML = session.getItem("user") +" "+" <button class='button-logout' id='log-out-button'>Log Out</button>";
+                    logOut.innerHTML = session.getItem("user") +" "+" <button class='button-logout' id='edit-user-button'>Account Settings</button> </button> <button class='button-logout' id='log-out-button'>Log Out</button>";
     
                     signUpFormWrapper.style.display = "none";
                     logOut.style.display = "inline";
                     dashboard.style.display = "block";
                     userEmail = email;
                     userLogedIn = true;
+
+                    let editUserButton = document.getElementById("edit-user-button");
+                    editUserButton.addEventListener("click", userDataEdition);
 
                     if (userLogedIn === true) {
 
@@ -625,13 +716,16 @@ let toDoList = () => {
                 } else {
                     session.setItem("user",userData.firstName+ " " +userData.lastName);
 
-                    logOut.innerHTML = session.getItem("user") +" "+" <button class='button-logout' id='log-out-button'>Log Out</button>";
+                    logOut.innerHTML = session.getItem("user") +" "+" <button class='button-logout' id='edit-user-button'>Account Settings</button> <button class='button-logout' id='log-out-button'>Log Out</button>";
    
                     logInFormWrapper.style.display = "none";
                     logOut.style.display = "inline";
                     dashboard.style.display = "flex";
                     userEmail = email;
                     userLogedIn = true;
+
+                    let editUserButton = document.getElementById("edit-user-button");
+                    editUserButton.addEventListener("click", userDataEdition);
 
                     if (userLogedIn === true) {
 
