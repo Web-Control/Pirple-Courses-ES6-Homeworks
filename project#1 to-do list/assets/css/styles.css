@@ -1,8 +1,5 @@
-html {
-   height:100%;
-  }
+
 body {
-   min-height:100%; 
    padding:0; 
    margin:0; 
    position:relative; 
@@ -14,12 +11,10 @@ body {
     margin-bottom:30px;
     width:80%;
     height:auto;
-    min-height: 300px;
     padding: 5px 5px 5px 5px;
     text-align: center;
-
+    min-height: 84.2vh;
     /*border: 1px solid black;*/
-   
 }
 
 
@@ -101,7 +96,7 @@ body {
   flex-direction: column;
   margin-top:85px;
   padding: 5px 5px 5px 5px;
-  width:40%;
+  width:30%;
   
 }
 
@@ -113,10 +108,6 @@ display: block;
   margin-top:3px;
   margin-bottom: 3px;
   display:block;
-}
-
-#list-edition-form button {
-display: block;
 }
 
 #list-edition-form button {
@@ -290,12 +281,14 @@ input {
   }
 
   footer {
+    color: silver;
     clear: both;
     position: relative;
     /* right: 0;
     bottom: 0;
     left: 0; */
     padding: 1rem;
-    background-color: #efefef;
+    background-color: #3c3c3e;
     text-align: center;
+    
   }

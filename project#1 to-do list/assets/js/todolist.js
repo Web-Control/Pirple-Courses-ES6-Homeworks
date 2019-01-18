@@ -1,7 +1,20 @@
 
 
 let toDoList = () => {
+    //
+    var password = "password";
+    var text = "my secret text";
+    var parameters = { "iter" : 1000 };
+    var rp = {};
+    var cipherTextJson = {};
 
+    sjcl.misc.cachedPbkdf2(password, parameters);
+    cipherTextJson = sjcl.encrypt(password, text, parameters, rp);
+    console.log(cipherTextJson);
+
+    var decryptedText = sjcl.decrypt(password, cipherTextJson)
+    console.log(decryptedText);
+    //
     let storage = window.localStorage;
     let session = window.sessionStorage;
 
@@ -30,7 +43,7 @@ let toDoList = () => {
 
     let successgMessage = (text) => {
 
-        message.innerHTML = "<div class='alert-success' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Success! </strong>"+ text +"</div>"
+        message.innerHTML = "<div class='alert-success' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Success! </strong>"+ text +"</div>";
         let closeBtn = document.getElementById("closebtn");
         let alert = document.getElementById("alert");
 
@@ -118,6 +131,7 @@ let toDoList = () => {
 
         let editForm = document.getElementById("edit-account-form");
         let editButton = document.getElementById("edit-account-form-button");
+        let closeButton = document.getElementById("edit-account-close-button");
         let inputs = editForm.getElementsByTagName("input");
         let userData = storage.getItem(userEmail);
         userData = JSON.parse(userData);
@@ -177,7 +191,15 @@ let toDoList = () => {
             
         }
 
+        let close = (e) => {
+            e.preventDefault();
+
+            editAccountFormWrapper.style.display ="none";
+            dashboard.style.display = "flex";
+        }
+
         editButton.addEventListener("click",edit);
+        closeButton.addEventListener("click", close);
     }
 
     let showLists = () => {
@@ -306,6 +328,10 @@ let toDoList = () => {
                         userData = JSON.stringify(userData);
 
                         storage.setItem(userEmail,userData);
+                        showLists();
+
+                        let message = "Your list have been edited.";
+                        successgMessage(message);
 
                         
                     } else {
@@ -315,6 +341,9 @@ let toDoList = () => {
 
                         storage.setItem(userEmail,userData);
                         showLists();
+
+                        let message = "Your list have been edited.";
+                        successgMessage(message);
                     }
 
                   }
@@ -429,6 +458,23 @@ let toDoList = () => {
 
             saveEditButton.addEventListener("click",saveChanges);
 
+            let closeButton = document.createElement("button");
+            closeButton.setAttribute("class","button button-red");
+            closeButton.innerText = "Close";
+
+            editionForm.appendChild(closeButton);
+
+            let close = (e) => {
+                e.preventDefault();
+
+                editionZone.style.display = "none";
+            }
+
+            closeButton.addEventListener("click",close);
+
+
+           
+
         }
 
         //Adding click function to list lists
@@ -445,10 +491,12 @@ let toDoList = () => {
     let createList = () => {
 
         let createListButton = document.getElementById("create-list-button");
+        let saveListButton = document.getElementById("save-list-button");
+        let closeButton = document.getElementById("createlist-close-button");
         let creatListDiv = document.getElementById("create-list-form-wrapper");
         let createListForm = document.getElementById("create-list-form");
         let itemsDiv = document.getElementById("list-items");
-        let saveListButton = document.getElementById("save-list-button");
+      
 
         let saveList = (e) => {
             e.preventDefault();
@@ -516,6 +564,7 @@ let toDoList = () => {
         let createListToDo = (e) => {
             e.preventDefault();
             creatListDiv.style.display = "block";
+            createListButton.style.display = "none";
             let addItemButton = document.getElementById("add-item-button");
             let removeItemButton = document.getElementById("remove-item-button");
 
@@ -535,8 +584,17 @@ let toDoList = () => {
 
         }
 
+        let close = (e) => {
+            e.preventDefault();
+
+            creatListDiv.style.display = "none";
+            createListButton.style.display = "block";
+        }
+
         createListButton.addEventListener("click",createListToDo);
         saveListButton.addEventListener("click",saveList);
+
+        closeButton.addEventListener("click", close);
     }
 
     let signUp = () => { 
