@@ -1,22 +1,10 @@
 
 
 let toDoList = () => {
-    //
-    var password = "password";
-    var text = "my secret text";
-    var parameters = { "iter" : 1000 };
-    var rp = {};
-    var cipherTextJson = {};
-
-    sjcl.misc.cachedPbkdf2(password, parameters);
-    cipherTextJson = sjcl.encrypt(password, text, parameters, rp);
-    console.log(cipherTextJson);
-
-    var decryptedText = sjcl.decrypt(password, cipherTextJson)
-    console.log(decryptedText);
-    //
+   
     let storage = window.localStorage;
     let session = window.sessionStorage;
+    var text = "my secret text"; //For hash passwords
 
     let logOut = document.getElementById("log-out");
     let message = document.getElementById("message");
@@ -31,13 +19,14 @@ let toDoList = () => {
 
     let warningMessage = (text) => {
 
-        message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning! </strong>"+ text +". Please try again.</div>"
+        message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning! </strong>"+ text +". Please try again.</div>";
+
         let closeBtn = document.getElementById("closebtn");
         let alert = document.getElementById("alert");
         let closeAlert = () => {
         alert.style.display = "none";
         }
-        closeBtn.addEventListener("click",closeAlert)
+        closeBtn.addEventListener("click",closeAlert);
 
     }
 
@@ -51,9 +40,9 @@ let toDoList = () => {
         alert.style.display = "none";
         }
 
-        closeBtn.addEventListener("click",closeAlert)
+        closeBtn.addEventListener("click",closeAlert);
 
-        setTimeout(closeAlert,5000);
+        setTimeout(closeAlert,3000);
     
 
     }
@@ -608,12 +597,21 @@ let toDoList = () => {
             let lastName = document.getElementById("last-name").value;
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
+
+                //Hash passwords
+                var parameters = { "iter" : 1000 };
+                var rp = {};
+                var cipherTextJson = {};
+
+                sjcl.misc.cachedPbkdf2(password, parameters);
+                cipherTextJson = sjcl.encrypt(password, text, parameters, rp);
+                //
             
             let signUpFormData = {};
             signUpFormData.firstName = firstName;
             signUpFormData.lastName = lastName;
             signUpFormData.email = email;
-            signUpFormData.password = password;
+            signUpFormData.password = cipherTextJson;
 
             let validFormData = "";
             let checkData = () => {
@@ -632,45 +630,31 @@ let toDoList = () => {
                  }
                 
                 if (isUserEmailUsed===true) {
-                    message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning! </strong> User with that email already exist. Please try again.</div>"
-                    let closeBtn = document.getElementById("closebtn");
-                    let alert = document.getElementById("alert");
-                    let closeAlert = () => {
-                    alert.style.display = "none";
-                    }
-                    closeBtn.addEventListener("click",closeAlert)
+                    let message = "User with that email already exist";
+                    warningMessage(message);
                     
                 } else {
                     let i = 0;
                     for (const key in signUpFormData) {
+
+                        if (i === 2 ) {
+                            validData = true;
+                            break;
+                        }
                         
                         if ( typeof signUpFormData[key] !== "string") {
                             validFormData = false;
-                            message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning!</strong> Data should be only a text. Please try again.</div>"
-                            let closeBtn = document.getElementById("closebtn");
-                            let alert = document.getElementById("alert");
-                            let closeAlert = () => {
-                            alert.style.display = "none";
-                            }
-                            closeBtn.addEventListener("click",closeAlert)
+                            let message = "Data should be only a text";
+                           warningMessage(message);
                             break;
-                        } else  if (signUpFormData[key].length > 30) {
+                        } else  if (signUpFormData[key].length > 30 || password.length > 30) {
                             validFormData = false;
-                            message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning!</strong> Max input = 30 signs. Please try again.</div>"
-                            let closeBtn = document.getElementById("closebtn");
-                            let alert = document.getElementById("alert");
-                            let closeAlert = () => {
-                            alert.style.display = "none";
-                            }
-                            closeBtn.addEventListener("click",closeAlert)
+                            let message = "Max input = 30 signs";
+                            warningMessage(message);
                             break;
                         } else {
                             i++;
                             }
-
-                        if (i === 4) {
-                            validData = true;
-                        }
                     }
                 }
 
@@ -708,14 +692,8 @@ let toDoList = () => {
                         
                     }
                 } else {
-                    message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning!</strong> Something is wrong. Please try again.</div>"
-    
-                    let closeBtn = document.getElementById("closebtn");
-                    let alert = document.getElementById("alert");
-                    let closeAlert = () => {
-                        alert.style.display = "none";
-                    }
-                    closeBtn.addEventListener("click",closeAlert)
+                    let message = "Something is wrong";
+                    warningMessage(message);
                 }
             }
 
@@ -727,6 +705,7 @@ let toDoList = () => {
 
     let logIn = () => {
         let logInForm = document.getElementById("logInForm");
+        var parameters = { "iter" : 1000 }; // For unhashed passwords
 
         let tryLogIn = (e) => {
             e.preventDefault();
@@ -747,29 +726,20 @@ let toDoList = () => {
              }
 
              if (!emailPassed) {
-                message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning!</strong> Wrong email. Please try again.</div>"
-
-                let closeBtn = document.getElementById("closebtn");
-                let alert = document.getElementById("alert");
-                let closeAlert = () => {
-                    alert.style.display = "none";
-                }
-                closeBtn.addEventListener("click",closeAlert)
+                let message = "Wrong email";
+                warningMessage(message);
                  
              } else {
                 let user = storage.getItem(email);
                 let userData = JSON.parse(user);
-   
-                if (userData.password !== password) {
 
-                    message.innerHTML = "<div class='alert-danger' id='alert'><span class='closebtn' id='closebtn'>&times;</span><strong>Warning!</strong> Wrong password. Please try again.</div>"
+                sjcl.misc.cachedPbkdf2(password, parameters);
+                var decryptedText = sjcl.decrypt(password, userData.password);
    
-                    let closeBtn = document.getElementById("closebtn");
-                    let alert = document.getElementById("alert");
-                    let closeAlert = () => {
-                        alert.style.display = "none";
-                    }
-                    closeBtn.addEventListener("click",closeAlert)
+                if (text !== decryptedText) {
+
+                    let message = "Wrong password";
+                    warningMessage(message);
                     
                 } else {
                     session.setItem("user",userData.firstName+ " " +userData.lastName);
