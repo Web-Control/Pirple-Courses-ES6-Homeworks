@@ -16,7 +16,7 @@
         <div id="message"></div>
 
         <div id="main">
-            <h1>to-do list</h1>
+            <h1>To-Do Lists</h1>
             <p>This app will let you create and manage lists with staff you have to do.</p><br><br>
 
             <button class="button button-blue log-button" id="signUp-button">Sign Up</button>    <button class="button button-green log-button" id="logIn-button">Log In </button>
@@ -30,14 +30,15 @@
                 <label>Password</label><br>
                 <input type="password" maxlength="30" id="log-in-password" required><br><br>
 
-                <input type="submit" value="Log In" class="button button-green" id="logIn-button2">
+                <input type="submit" value="Log In" class="button button-green" id="logIn-button2"><br><br>
+                <button class="button button-red" id="close-login-zone-button">Close</button>
 
 
             </form>
         </div>
 
         <div id = "signUpFormWrapper" style = "display: none">
-            <h1>Sign Up for "to-do list":</h1>
+            <h1>Sign Up for "To-Do Lists":</h1>
             <form id="sign-Up-form" method="post">
                 <label>First Name</label><br>
                 <input type="text" maxlength="30" name="firstname" id="first-name" required><br><br>
@@ -54,7 +55,9 @@
                 <label>I agree to the Terms of Use:</label>
                 <input type="checkbox" name="terms" id="terms-agreement" required><br><br>
 
-                <input type="submit" value = "Sign Up" class="button button-green" id = "signUp-button2">
+                <input type="submit" value = "Sign Up" class="button button-green" id = "signUp-button2"><br><br>
+
+                <button class="button button-red" id="signUp-zone-close-button">Close</button>
 
             </form>
         </div>

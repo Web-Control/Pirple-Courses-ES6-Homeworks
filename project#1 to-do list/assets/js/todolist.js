@@ -67,7 +67,7 @@ let toDoList = () => {
         let signUpButton = document.getElementById("signUp-button");
         let logInButton = document.getElementById("logIn-button");
 
-    let showSignUp = () => {
+        let showSignUp = () => {
             main.style.display = "none";
             signUpFormWrapper.style.display = "inherit";
         }
@@ -77,22 +77,8 @@ let toDoList = () => {
             logInFormWrapper.style.display = "inherit";
         }
 
-
         signUpButton.addEventListener("click",showSignUp);
         logInButton.addEventListener("click",showLogIn);
-
-       // console.log(window.localStorage);
-
-    //     let storage = window.localStorage;
-    //     storage.setItem('UserSzymon','{"firstName":"Szymon", "lastName": "Chomej","listaNr1":"sniadanie,obiad,praca dowmowa,kolacja"}');
-    // console.log(window.localStorage);
-    // console.log(storage);
-    // let userSzymon = JSON.parse(storage.getItem("UserSzymon"));
-    // console.log(userSzymon);
-    // console.log(typeof userSzymon);
-    // let listaNr1 = userSzymon.listaNr1;
-    // listaNr1 = listaNr1.split(",");
-    // console.log(listaNr1);
 
     }
 
@@ -129,7 +115,6 @@ let toDoList = () => {
         inputs[0].value = userData.firstName;
         inputs[1].value = userData.lastName;
         inputs[2].value = userData.email;
-        inputs[3].value = userData.password;
         inputs[4].checked = true;
 
         let edit = (e) => {
@@ -139,7 +124,22 @@ let toDoList = () => {
             let isSthInFormEmpty = isAnyInputEmpty(inputs);
             let dataFromForm = [];
 
+            //Hash passwords
+            var parameters = { "iter" : 1000 };
+            var rp = {};
+            var cipherTextJson = {};
+            let password = inputs[3].value;
+
+            sjcl.misc.cachedPbkdf2(password, parameters);
+            cipherTextJson = sjcl.encrypt(password, text, parameters, rp);
+             //
+
             for (let i = 0; i < inputs.length; i++) {
+
+                if (i ===3) {
+                    dataFromForm[i] = cipherTextJson;
+                    continue;
+                }
                 
                 dataFromForm[i] = inputs[i].value;
                 
@@ -151,7 +151,7 @@ let toDoList = () => {
             } else {
                 let userData = storage.getItem(userEmail);
                 userData = JSON.parse(userData);
-
+                
                  //We save inputs to user data in localeStorage
                 userData.firstName = dataFromForm[0];
                 userData.lastName = dataFromForm[1];
@@ -163,6 +163,15 @@ let toDoList = () => {
                 if (userEmail === inputs[2].value) {
                     storage.setItem(userEmail,userData);
 
+                    session.setItem("user",inputs[0].value+ " " +inputs[1].value);
+
+                    logOut.innerHTML = session.getItem("user") +" "+" <button class='button-logout' id='edit-user-button'>Account Settings</button> <button class='button-logout' id='log-out-button'>Log Out</button>";
+
+                    let editUserButton = document.getElementById("edit-user-button");
+                    editUserButton.addEventListener("click", userDataEdition);
+
+                    logOutUser();
+
                     let message ="Your account data were changed."
                     successgMessage(message);
 
@@ -170,10 +179,18 @@ let toDoList = () => {
                     storage.setItem(inputs[2].value,userData);
                     storage.removeItem(userEmail);
 
+                    session.setItem("user",inputs[0].value+ " " +inputs[1].value);
+
+                    logOut.innerHTML = session.getItem("user") +" "+" <button class='button-logout' id='edit-user-button'>Account Settings</button> <button class='button-logout' id='log-out-button'>Log Out</button>";
+
+                    let editUserButton = document.getElementById("edit-user-button");
+                    editUserButton.addEventListener("click", userDataEdition);
+
+                    logOutUser();
+
                     let message ="Your account data were changed."
                     successgMessage(message);
 
-                    console.log(storage);
                 }
 
             } 
@@ -225,7 +242,6 @@ let toDoList = () => {
         }
 }
     let editList = () => {
-        let toDoListsDiv = document.getElementById("todo-lists-wrapper");
         let liList = document.getElementsByTagName("LI");
         let toDoListsNames = [];
         let editionZone = document.getElementById("list-edition-zone");
@@ -453,6 +469,32 @@ let toDoList = () => {
 
             editionForm.appendChild(closeButton);
 
+            let deleteListButton = document.createElement("button");
+            deleteListButton.setAttribute("class","button button-red");
+            deleteListButton.innerText = "Delete List";
+
+            editionForm.appendChild(deleteListButton);
+
+            let deleteList = (e) => {
+                e.preventDefault();
+
+                console.log(userData);
+                delete userData[listName];
+                userData = JSON.stringify(userData);
+
+                storage.setItem(userEmail,userData);
+
+                let message = "List has been deleted.";
+                successgMessage(message);
+
+                editionZone.style.display = "none";
+
+                showLists();
+
+            }
+
+            deleteListButton.addEventListener("click",deleteList);
+
             let close = (e) => {
                 e.preventDefault();
 
@@ -589,6 +631,7 @@ let toDoList = () => {
     let signUp = () => { 
 
         let signUpForm = document.getElementById("sign-Up-form");
+        let signUpZoneCloseButton = document.getElementById("signUp-zone-close-button");
 
         let createUser = (e) => {
             e.preventDefault();
@@ -677,7 +720,7 @@ let toDoList = () => {
     
                     signUpFormWrapper.style.display = "none";
                     logOut.style.display = "inline";
-                    dashboard.style.display = "block";
+                    dashboard.style.display = "flex";
                     userEmail = email;
                     userLogedIn = true;
 
@@ -699,12 +742,23 @@ let toDoList = () => {
 
         }
 
+        let close = (e) => {
+            e.preventDefault();
+
+            signUpFormWrapper.style.display = "none";
+            main.style.display = "block";
+        }
+
         signUpForm.addEventListener("submit", createUser);
+
+        signUpZoneCloseButton.addEventListener("click",close);
 
     }
 
     let logIn = () => {
         let logInForm = document.getElementById("logInForm");
+        let closeLoginZoneButton = document.getElementById("close-login-zone-button");
+
         var parameters = { "iter" : 1000 }; // For unhashed passwords
 
         let tryLogIn = (e) => {
@@ -769,7 +823,15 @@ let toDoList = () => {
             
          }
 
+        let close = (e) => {
+            e.preventDefault();
+            logInFormWrapper.style.display = "none";
+            main.style.display = "block";
+        }
+
         logInForm.addEventListener("submit",tryLogIn);
+
+        closeLoginZoneButton.addEventListener("click",close);
 
 
     }
