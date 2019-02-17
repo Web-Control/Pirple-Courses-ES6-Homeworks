@@ -88,6 +88,27 @@ In application files tree component are divided on 4 files.
 ---
 
 # 1-2-1.Templates
+Template is HTML code with binded component properties, methods, events, angular directives and pipes. Propeties are enclosed in double curly braces: {{propertyName}}.
+You can put code in component property call <i>template</i> or in seperate file and link to it in the component metadata using the <i>templateUrl</i> property.
+
+In property:
+```javascript
+@Component({
+  selector: 'app-root',
+  template: 
+  `<h1>{{title}}</h1>
+    <h2>My favorite hero is: {{myHero}}</h2>`
+})
+```
+In file:
+```javascript
+<h2>My Heroes</h2>
+<ul class="heroes">
+    <li *ngFor="let hero of heroes" (click)="onSelect(hero)" [class.selected]="hero === selectedHero">
+      <span class="badge">{{hero.id}}</span> {{hero.name}}
+  </li>
+</ul>
+```
 
 ---
 
