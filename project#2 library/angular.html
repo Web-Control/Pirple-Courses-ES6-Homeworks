@@ -87,7 +87,7 @@ In application files tree component are divided on 4 files.
 
 ---
 
-# 1-2-1.Templates
+# 1-2-1.Component Template
 Template is HTML code with binded component properties, methods, events, angular directives and pipes. Propeties are enclosed in double curly braces: {{propertyName}}.
 You can put code in component property call <i>template</i> or in seperate file and link to it in the component metadata using the <i>templateUrl</i> property.
 
@@ -123,6 +123,25 @@ The word uppercase in the interpolation binding, right after the pipe operator (
 ---
 
 # 1-3.Services
+A service is typically a class with a narrow, well-defined purpose. It should do something specific.
+
+Angular distinguishes components from services to increase modularity and reusability.
+By separating a component's view-related functionality from other kinds of processing,
+ you can make your component classes lean and efficient.
+
+ A component can delegate certain tasks to services, such as fetching data from the server, validating user input, or logging directly to the console. By defining such processing tasks in an injectable service class, you make those tasks available to any component.
+You can also make your app more adaptable by injecting different providers of the same kind of service, as appropriate in different circumstances.
+
+Here's an example of a service class that logs to the browser console:
+
+```javascript
+export class Logger {
+  log(msg: any)   { console.log(msg); }
+  error(msg: any) { console.error(msg); }
+  warn(msg: any)  { console.warn(msg); }
+}
+```
+
 
 ---
 
