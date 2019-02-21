@@ -40,8 +40,9 @@ layout: true
 # Agenda
 
 1. Architecture
-2. Forms
-3. ...
+2. Routing
+3. Forms
+4. ...
 
 ---
 # 1.Architecture 
@@ -154,8 +155,28 @@ export class Logger {
 #1-3-1.Dependency injection
 
 ---
+# 2.Routing
 
-# 2.Forms
+Router is one of the Angular modules.
+
+Routes tell the router which view to display when a user clicks a link or pastes a URL into the browser address bar.
+
+A typical Angular Route has two properties:
+
+1.path: a string that matches the URL in the browser address bar.
+2.component: the component that the router should create when navigating to this route.
+
+```javascript
+import { HeroesComponent }      from './heroes/heroes.component';
+
+const routes: Routes = [
+  { path: 'heroes', component: HeroesComponent }
+];
+```
+
+---
+
+# 3.Forms
 
 
     </textarea>
