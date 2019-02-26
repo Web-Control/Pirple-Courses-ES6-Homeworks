@@ -230,7 +230,43 @@ A provider tells an injector how to create the service. You must configure an in
 ---
 #1-3-1.Dependency injection
 
-<b>Injecting services</b>
+<b>Providing services</b>
+
+A provider is an instruction to the DI system on how to obtain a value for a dependency. Most of the time, these dependencies are services that you create and provide.
+
+By default, @Injectable decorator is configured with a providedIn property, which creates a provider for the service. In this case, providedIn: 'root' specifies that the service should be provided in the root injector.
+
+<b>Provider scope</b>
+
+When you add a service provider to the root application injector, it’s available throughout the app. Additionally, these providers are also available to all the classes in the app as long they have the lookup token.
+
+You should always provide your service in the root injector unless there is a case where you want the service to be available only if the consumer imports a particular @NgModule.
+
+---
+#1-3-1. Dependency injection
+
+Scope provider to the module:
+
+```javascript
+import { Injectable } from '@angular/core';
+import { UserModule } from './user.module';
+
+@Injectable({
+  providedIn: UserModule,
+})
+export class UserService {
+}
+```
+
+Scope provider to the component:
+
+```javascript
+@Component({
+  /* . . . */
+    providers: [UserService]
+  })
+```
+
 ---
 #1-4.Bootstrapping
 
