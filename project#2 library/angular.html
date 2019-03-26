@@ -445,10 +445,91 @@ const routes: Routes = [
 ```
 
 ---
-
 # 3.Forms
 
-Angular forms
+Angular provides two different approaches to handling user input through forms: reactive and template-driven. 
+Both capture user input events from the view, validate the user input, create a form model and data model to update, and provide a way to track changes.
+
+<table>
+  <thead>
+  <tr>
+  <th></th>
+  <th>Reactive</th>
+  <th>Template-driven</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>Setup (form model)</td>
+  <td>More explicit, created in component class</td>
+  <td>Less explicit, created by directives</td>
+  </tr>
+  <tr>
+  <td>Data model</td>
+  <td>Structured</td>
+  <td>Unstructured</td>
+  </tr>
+  <tr>
+  <td>Predictability</td>
+  <td>Synchronous</td>
+  <td>Asynchronous</td>
+  </tr>
+  <tr>
+  <td>Form validation</td>
+  <td>Functions</td>
+  <td>Directives</td>
+  </tr>
+  <tr>
+  <td>Mutability</td>
+  <td>Immutable</td>
+  <td>Mutable</td>
+  </tr>
+  <tr>
+  <td>Scalability</td>
+  <td>Low-level API access</td>
+  <td>Abstraction on top of APIs</td>
+  </tr>
+  </tbody>
+  </table>
+---
+  # 3.Forms
+Setup in reactive forms
+
+Here's a component with an input field for a single control implemented using reactive forms.
+
+```javascript
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+ 
+@Component({
+  selector: 'app-reactive-favorite-color',
+  template: `
+    Favorite Color: <input type="text" [formControl]="favoriteColorControl">
+  `
+})
+export class FavoriteColorComponent {
+  favoriteColorControl = new FormControl('');
+}
+```
+---
+  # 3.Forms
+Setup in template-driven forms
+
+Here's the same component with an input field for a single control implemented using template-driven forms.
+
+```javascript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-template-favorite-color',
+  template: `
+    Favorite Color: <input type="text" [(ngModel)]="favoriteColor">
+  `
+})
+export class FavoriteColorComponent {
+  favoriteColor = '';
+}
+```
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
